@@ -4,23 +4,18 @@ format: html
 editor: visual
 ---
 
-## Quarto
+## **Introduction**
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+This document summarizes the patch-level DE results and asks whether some groups of patches show a consistent or enriched response. The aim is to move from patch-wise results to higher-level biological patterns across patches and datasets.
 
-## Running Code
+::: callout-important
+**Goals.**
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+-   Identify subgroups of patches enriched for a common DE relationship.
 
-```{r}
-1 + 1
-```
+-   Choose and justify meta-analysis strategies that combine evidence across patches.
 
-You can add options to executable code like this
+-   Compare results across the two datasets to see whether the same spatial relationships recur in both systems.
 
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+-   Produce a final synthesis that links patch structure, spatial DE, and biological interpretation.
+:::

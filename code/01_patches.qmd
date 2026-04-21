@@ -4,23 +4,16 @@ format: html
 editor: visual
 ---
 
-## Quarto
+## Introduction
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+This document introduces the first step of the analysis: defining spatial units for downstream testing. The main challenge is that “patches” do not have to be fixed in advance, so the pipeline should stay flexible enough to accept algorithmic patches, manually drawn regions, domains, or cell neighborhoods.
 
-## Running Code
+::: callout-important
+**Goals**
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+-   Build a patch-definition workflow that can use different inputs, including patchDE, SVA, domains, or cell neighborhoods.
 
-```{r}
-1 + 1
-```
+-   Compare alternative patching strategies on the two planned datasets, MERFISH MouseColonIBD and CosMx colon cancer.
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+-   Produce patch-level objects that are ready for differential expression analysis in the next document.
+:::
