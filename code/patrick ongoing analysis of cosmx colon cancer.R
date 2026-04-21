@@ -151,6 +151,14 @@ patches <- getPatches(xy = xy[use, ],
 #saveRDS(patches, file = "processed/patches1000.RDS")
 patches <- readRDS("processed/patches500.RDS")
 
+# define patch polygons:
+polys <- list()
+for (patch in setdiff(unique(patches), NA)) {
+  inds <- ((patches == patch) & !is.na(patches))
+  polys[[patch]] <- xy[use, ][inds, ][chull(xy[use, ][inds, ]), ]
+}
+
+
 plot(xy[use, ], pch = 16, cex = 0.1, col = "grey80")
 points(xy[use, ], pch = 16, cex = 0.1, col = rep(cellcols,100)[as.numeric(as.factor(patches))])
 
@@ -206,7 +214,7 @@ consistent <- abs(metaZ) > 2
 pheatmap::pheatmap(de[consistent, ], col = colorRampPalette(c("blue", "white", "red"))(101),
                    breaks = seq(-10,10,length.out=100))
 
-pheatmap::pheatmap(-ts[consistent, ], col = colorRampPalette(c("darkblue", "blue", "white", "red", "darkred"))(101),
+pheatmap::pheatmap(replace(-ts, abs(ts) < 2, 0)[consistent, ], col = colorRampPalette(c("darkblue", "blue", "white", "red", "darkred"))(101),
                    breaks = seq(-10,10,length.out=100))
 
 pheatmap::pheatmap(cor(t(de[consistent, ])), 
@@ -272,7 +280,7 @@ rownames(mz) <- patchnames
 pheatmap::pheatmap(mz)
 
 ## get umap projection and nearest neighbors network:
-umapobj <- uwot::umap(mz, ret_nn = TRUE)
+umapobj <- uwot::umap(mz, ret_nn = TRUE, n_neighbors = 10)
 um <- umapobj$embedding  # umap projection
 zn <- umapobj$nn$euclidean        # nearest neighbors network   
 
@@ -299,4 +307,51 @@ rownames(patchmetaZ) <- patchnames
 pheatmap::pheatmap(replace(patchmetaZ, abs(patchmetaZ) < 2, 0), col = colorRampPalette(c("blue", "white", "red"))(101),
                    breaks = seq(-10,10,length.out=101))
 
+# highly variable genes?
+genevar <- apply(patchmetaZ, 2, sd)
+# genes with consistent effects but weak results:
+plot(posrate, rowMeans(abs(ts)), col = 0)
+text(posrate, rowMeans(abs(ts)), names(posrate), cex = 0.5)
 
+
+# umap:
+genes <- c("B2M", "MUC2", names(genevar)[order(genevar, decreasing = TRUE)[1:2]])
+
+par(mfrow = c(2,2))
+par(mar = c(0,0,1,0))
+for (gene in genes) {
+  plot(um, pch = 16, cex = 1, main = gene,
+       xaxt = "n", yaxt = "n",
+       col = colorRampPalette(c("blue", "grey", "red"))(101)[
+         pmax(1, pmin(101, 51 + 50 * patchmetaZ[, gene] / 10))])
+}
+
+
+
+### now what?
+
+# - define clusters of genes (cluster across patches, not metaanalysis)
+# - define clusters of patches - based on DE results, or based on Z?
+# ---> a good framing: what neighborhood characteristics predict DE?  -> neighborhooz/Z-defined umap shows this well
+
+
+# plot patches in space:
+par(mfrow = c(1,2))
+par(mar = c(0,0,2,0))
+subinds <- sample(1:nrow(xy), 20000)
+for (gene in genes[1:4]) {
+  plot(xy[subinds, ], col = "grey80", pch = 16, cex = 0.1, asp = 1, 
+       main = paste0(gene, " per-patch t-statistic"))
+  for (patch in names(polys)) {
+    polygon(polys[[patch]], border = "black",
+            col = colorRampPalette(c("darkblue", "blue", "white", "red", "darkred"))(101)[
+              pmax(1, pmin(101, 51 + 50 * ts[gene, patch] / 10))])
+  }
+  plot(xy[subinds, ], col = "grey80", pch = 16, cex = 0.1, asp = 1,  
+       main = paste0(gene, " per-patch metaanalysis Z-score"))
+  for (patch in names(polys)) {
+    polygon(polys[[patch]], border = "black",
+            col = colorRampPalette(c("darkblue", "blue", "white", "red", "darkred"))(101)[
+              pmax(1, pmin(101, 51 + 50 * patchmetaZ[patch, gene] / 10))])
+  }
+}
