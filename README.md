@@ -114,6 +114,10 @@ Or similarly, we could identify patches/subgroups where the DE results are most 
 Successful definition of small patches retaining adequate statistical power:
 
 
+Local meta-analysis obtains high-confidence results from individually under-powered patches:
+
+<img width="1624" height="726" alt="image" src="https://github.com/user-attachments/assets/10c0d67a-021b-4339-a6b2-ca5ad6cb05cf" />
+
 
 
 
