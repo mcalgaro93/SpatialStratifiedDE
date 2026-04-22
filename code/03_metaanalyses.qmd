@@ -24,7 +24,7 @@ This document summarizes the patch-level DE results and asks whether some groups
 
 We combine patch-level DE estimates using inverse-variance weighting. This provides a robust global summary of the effects across the entire tissue sample.
 
-```r
+```{r}
 # Extract results for the variable of interest
 res <- de_results$Immune_Exposure
 
@@ -59,7 +59,7 @@ Visualizing the meta-analysis results through heatmaps or volcano plots helps su
 ### Global Meta-analysis Summary
 A volcano plot of the meta-estimates against the Z-scores identifies genes with the most consistent spatial response across the entire sample.
 
-```r
+```{r}
 library(ggplot2)
 
 meta_df <- data.frame(
@@ -81,7 +81,7 @@ ggplot(meta_df, aes(x = estimate, y = abs(zscore), color = consistent)) +
 ### Patch-level Consistency
 We use a heatmap to inspect the t-statistics of the most consistent genes across all patches. This helps identify if certain patches are driving the global signal or if the effect is truly widespread.
 
-```r
+```{r}
 library(pheatmap)
 
 # Calculate t-statistics per patch
@@ -101,9 +101,9 @@ pheatmap(t_stats[top_consistent_genes, ],
 ### Specific Gene Inspection
 Finally, we can map the expression of a specific gene of interest alongside the patch boundaries and the exposure variable (Immune proximity).
 
-```r
+```{r}
 # Example gene of interest
-goi <- "Muc2"
+goi <- "Egr1"
 
 # Create a plotting data frame for cells in patches
 plot_df <- data.frame(
@@ -121,4 +121,47 @@ ggplot(plot_df, aes(x = x, y = y, color = expression)) +
   theme_void() +
   labs(title = paste("Spatial Expression of", goi),
        color = "Logcounts")
+```
+
+### Patch-level Aggregate Visualization
+To better understand the spatial trends across the tissue, we can overlay the patch polygons colored by their aggregated metrics (mean expression, effect size, or t-statistic).
+
+```{r}
+#| label: patch-aggregated-plot
+library(dplyr)
+library(tidyr)
+
+# Prepare aggregate data for the gene of interest (goi)
+patch_metrics <- data.frame(
+  patch = colnames(res$ests),
+  effect_size = res$ests[goi, ],
+  t_stat = res$ests[goi, ] / res$ses[goi, ],
+  mean_expr = sapply(colnames(res$ests), function(p) mean(y[patch_assignments == p, goi]))
+)
+
+# Combine polygons with metrics for ggplot
+# Note: 'polys' must be available (defined in 01_patches.qmd)
+poly_df <- bind_rows(lapply(names(polys), function(p) {
+  as.data.frame(polys[[p]]) %>%
+    mutate(patch = p)
+})) %>%
+  left_join(patch_metrics, by = "patch")
+
+# Plot patches colored by effect size
+ggplot(poly_df, aes(x = x, y = y, group = patch, fill = effect_size)) +
+  geom_polygon(color = "black", size = 0.2) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red") +
+  theme_minimal() +
+  labs(title = paste("Patch-level Effect Size for", goi),
+       fill = "Effect Size",
+       x = "x (mm)", y = "y (mm)")
+
+# Plot patches colored by t-statistic
+ggplot(poly_df, aes(x = x, y = y, group = patch, fill = t_stat)) +
+  geom_polygon(color = "black", size = 0.2) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", limits = c(-5, 5), oob = scales::squish) +
+  theme_minimal() +
+  labs(title = paste("Patch-level T-statistic for", goi),
+       fill = "T-statistic",
+       x = "x (mm)", y = "y (mm)")
 ```
