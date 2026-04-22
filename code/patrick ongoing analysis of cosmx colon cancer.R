@@ -242,6 +242,10 @@ if (FALSE ){
 
 # get PCs:
 if (FALSE) {
+  # install the sparse pearson PCA package:
+  remotes::install_github("Nanostring-Biostats/CosMx-Analysis-Scratch-Space",
+                          subdir = "_code/scPearsonPCA", ref = "Main")
+  
   genefreq <- scPearsonPCA::gene_frequency(Matrix::t(counts)) ## gene frequency (across all cells)
   pcaobj <- scPearsonPCA::sparse_quasipoisson_pca_seurat(
     x = Matrix::t(counts[, hvgs]),
