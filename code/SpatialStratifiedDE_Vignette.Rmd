@@ -74,9 +74,9 @@ rownames(xy_mm) <- colnames(spe_sub)
 
 ### Initial Tissue Exploration
 
-Before focusing on specific cell types or neighborhoods, we visualize the entire tissue slice to understand its spatial organization.
+Before focusing on specific cell types or neighborhoods, we visualize the entire tissue slice to understand its spatial organization. As shown in **Figure 1** and **Figure 2**, the colon displays a highly organized architecture with distinct mucosal and muscular layers. The neighborhood analysis in **Figure 2** identifies large-scale domains like `MU4`, which we will use to isolate epithelial cells in a consistent tissue context while studying local immune cell gradients.
 
-```{r viz-initial, fig.cap="Initial Tissue Exploration"}
+```{r viz-initial, fig.cap="Figure 1: Tissue Slice by Cell Type (top) and Figure 2: Tissue Slice by Neighborhood (bottom)."}
 # Prepare data frame for plotting
 full_slice_df <- as.data.frame(xy_mm) %>%
   mutate(
@@ -147,6 +147,8 @@ spe_sub$patch[is_epithelial & is_MU4] <- patches
 ```
 
 ### Visualizing Patches
+
+We use the `getPatches` function to define spatial units optimized for studying our exposure variable. As seen in **Figure 3**, this tiles the `MU4` neighborhood into smaller, contiguous "patches", allowing us to isolate local units that share a similar large-scale context but capture varying immune exposure.
 
 ```{r viz-patches, fig.cap="Figure 3: Epithelial Patches in MU4 neighborhood."}
 # Define patch polygons for plotting
@@ -236,7 +238,9 @@ top_genes_names <- names(sort(abs(metaZ), decreasing = TRUE))[1:10]
 
 ### Global Summary (Volcano Plot)
 
-A volcano plot identifies genes with the most consistent spatial response across all patches. The x-axis represents the weighted average effect size (meta-estimate), while the y-axis shows the statistical significance (-log10 meta p-value). 
+A volcano plot identifies genes with the most consistent spatial response across all patches. As illustrated in **Figure 4**, the x-axis represents the weighted average effect size, while the y-axis shows the statistical significance (-log10 meta p-value). 
+
+**Interpretation:** **`Egr1`** (Early Growth Response 1) emerged as a top positive hit, suggesting it may be part of an immediate-early response triggered in epithelial cells by nearby immune signals. Conversely, genes like **`Rorc`** showed negative estimates, indicating they are repressed in immune-rich areas.
 
 ```{r volcano, fig.cap="Figure 4: Meta-analysis volcano plot. Red points indicate genes with a highly consistent spatial response (|Z| > 3)."}
 meta_df <- data.frame(
@@ -264,7 +268,9 @@ ggsave("../results/plots/04_volcano_plot.png", p4, width = 8, height = 6)
 
 ### Patch-level Consistency (Heatmap)
 
-This heatmap displays the t-statistics for the top 30 most consistent genes across every individual patch. It allows us to verify if a "consistent" gene is truly showing a similar trend in every patch.
+The meta-analysis provides a global view, but we must verify that these trends hold across individual units. **Figure 5** displays the t-statistics for the top 30 genes across every individual patch.
+
+**Interpretation:** The heatmap confirms that the response of `Egr1` and other top genes is not localized to a single "hotspot" but is fairly consistent across the majority of the sampled patches.
 
 ```{r heatmap, fig.cap="Figure 5: Heatmap of patch-level t-statistics for the top 30 consistent genes."}
 # Calculate t-statistics per patch
@@ -310,9 +316,9 @@ ggsave("../results/plots/06_egr1_spatial.png", p6, width = 8, height = 6)
 
 ### Patch-level Aggregate Visualization
 
-By aggregating data at the patch level, we reduce noise and can clearly visualize the "spatial effect" (t-statistic) across the tissue architecture. 
+By aggregating data at the patch level in **Figure 7**, we reduce noise and can clearly visualize the "spatial effect" across the tissue architecture. 
 
-**Interpretation:** If `Egr1` is consistently upregulated in proximity to immune cells, we expect to see the majority of patches colored in red (positive t-statistic).
+**Interpretation:** While the global meta-analysis for `Egr1` is positive, **Figure 7** reveals local variation. Most patches are red (positive correlation), but some show a neutral or slightly blue effect, which may correspond to different crypt-villus zones or varying immune cell compositions.
 
 ```{r patch-agg-viz, fig.cap="Figure 7: Patch-level t-statistics for Egr1. Red indicates a positive correlation between Egr1 expression and immune proximity."}
 # Prepare aggregate data for Egr1
@@ -343,21 +349,5 @@ p7
 ggsave("../results/plots/07_egr1_patch_tstat.png", p7, width = 8, height = 6)
 ```
 
-## Discussion and Interpretation
-
-Based on the spatial stratified analysis of the mouse colon MERFISH dataset, we can draw several key insights:
-
-### 1. Spatial Structure and Patching
-The initial exploration (Figures 1-2) highlights the complex architecture of the colon. By focusing on the `MU4` neighborhood and tiling it into 100 patches (Figure 3), we successfully isolated local units that are more homogeneous in their large-scale tissue context but retain local gradients of immune cell exposure.
-
-### 2. Global Spatial Programs
-The meta-analysis volcano plot (Figure 4) identified a clear set of genes whose expression is modulated by proximity to immune cells. **`Egr1`** emerged as a top positive hit, suggesting it may be part of an immediate-early response triggered in epithelial cells by nearby immune signals. Conversely, genes like **`Rorc`** showed negative estimates, indicating they are repressed in immune-rich areas or specifically expressed in immune-depleted mucosal regions.
-
-### 3. Consistency across the Tissue
-The heatmap (Figure 5) confirms that the response of `Egr1` and other top genes is not localized to a single "hotspot" but is fairly consistent across the majority of the sampled patches. This suggests a systemic spatial relationship rather than a stochastic outlier effect.
-
-### 4. Localized Insights for `Egr1`
-Detailed inspection of `Egr1` (Figures 6-7) reveals that while the global meta-analysis is positive, there is local variation. Most patches show a positive t-statistic (red), confirming the upregulation near immune cells. However, some patches show a neutral or even slightly negative effect (blue), which may correspond to different crypt-villus zones or varying immune cell compositions in the neighborhood.
-
 ### Conclusion
-This proof-of-concept demonstrates that spatial stratification can effectively move beyond simple global correlations to identify robust, locally-validated spatial programs in complex tissues. Future work should focus on automating the selection of optimal patch sizes and incorporating more complex mixed-effect models to further account for residual spatial autocorrelation.
+This proof-of-concept demonstrates that spatial stratification can effectively move beyond simple global correlations to identify robust, locally-validated spatial programs in complex tissues.
