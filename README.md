@@ -16,7 +16,7 @@ The repository is organized as follows:
 
 -   `R/`: Contains core function definitions (e.g., `getPatches`, `patchDE`).
 -   `vignettes/`: A comprehensive case study and walkthrough using MERFISH data.
--   `examples/`: Original Quarto documents and exploratory scripts from the hackathon.
+-   `examples/`: Original exploratory scripts and analysis files from the hackathon.
 -   `results/plots/`: Key visualizations from the analysis workflow.
 
 ## Installation
