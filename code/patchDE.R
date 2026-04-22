@@ -263,7 +263,7 @@ getPatches <- function(xy, X, npatches,
 
   out <- celldf$patch
   names(out) <- rownames(celldf)
-  return(out)
+  return(list(celldf=celldf, patchdf=patchdf))
 }
 
 
