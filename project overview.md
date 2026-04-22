@@ -110,6 +110,18 @@ Or similarly, we could identify patches/subgroups where the DE results are most 
 - Cluster patches into groups with similar DE results
 - Associate per-patch DE results with relevant variables, e.g. pathologist annotations of tissue regions, or local cell type abundance...
 
+
+## Results
+
+### Iterative algorithm obtains patches with decent statistical power:
+
+<img width="1131" height="674" alt="image" src="https://github.com/user-attachments/assets/c950f7e3-70b8-44ad-92f2-0889197b3f77" />
+
+
+### Smoothed patch metaanalysis improves statistical power:
+
+<img width="1657" height="838" alt="image" src="https://github.com/user-attachments/assets/122bb763-0945-4b72-8c76-f0d80bee2437" />
+
 ## Next steps / missing pieces:
 
 Methods:
