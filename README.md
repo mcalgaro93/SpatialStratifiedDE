@@ -41,14 +41,26 @@ Performs high-efficiency OLS on Pearson residuals. This approach scales to 18,00
 ### 3. Subgroup Meta-analysis
 Identifies biologically similar patches and combines their results to produce precise, high-confidence estimates even from individually under-powered regions.
 
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more information on how to get involved.
+
+## Code of Conduct
+
+All participants in this project are expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive environment.
+
+## License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for the full text.
+
 ## Authors
 
-This project was a collaborative effort during the Bioconductor Venice Hackathon 2026:
+This project was a collaborative effort during the [Bioconductor Venice Hackathon 2026](https://github.com/BiocCodingCollaborations/VeniceHackathon2026):
 
--   **Patrick Danaher** ([@pdanaher](https://github.com/pdanaher))
--   **Matteo Calgaro** ([@mcalgaro93](https://github.com/mcalgaro93))
--   **Robert Castelo** ([@rcastelo](https://github.com/rcastelo))
--   **Pere Moles Serò** ([@peremoles](https://github.com/peremoles))
+-   **Patrick Danaher** ([@pdanaher](https://github.com/pdanaher)) - Lead methodology and core R development.
+-   **Matteo Calgaro** ([@mcalgaro93](https://github.com/mcalgaro93)) - Implementation, workflow design, and repository management.
+-   **Robert Castelo** ([@rcastelo](https://github.com/rcastelo)) - Code review and optimization.
+-   **Pere Moles Serò** ([@peremoles](https://github.com/peremoles)) - Analysis and testing.
 
 ---
 
