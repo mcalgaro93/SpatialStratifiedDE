@@ -1,6 +1,5 @@
 ---
 title: "Spatial Stratified Differential Expression: A Case Study"
-author: "Gemini CLI & Matteo Calgaro"
 date: "`r Sys.Date()`"
 output: 
   html_document:
