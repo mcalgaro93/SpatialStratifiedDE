@@ -1,6 +1,12 @@
 # SpatialStratifiedDE
 
-A framework for spatially stratified differential expression analysis, developed during the [VeniceHackathon2026](https://github.com/BiocCodingCollaborations/VeniceHackathon2026).
+[![Bioconductor Hackathon 2026](https://img.shields.io/badge/Hackathon-Bioconductor%20Venice%202026-blue)](https://github.com/BiocCodingCollaborations/VeniceHackathon2026)
+
+<p align="center">
+  <img src="results/graphical_abstract.svg" width="800" alt="SpatialStratifiedDE Graphical Abstract">
+</p>
+
+A framework for spatially stratified differential expression analysis, developed during the [Bioconductor Venice Hackathon 2026](https://github.com/BiocCodingCollaborations/VeniceHackathon2026).
 
 ## Overview
 
