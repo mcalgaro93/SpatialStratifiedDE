@@ -342,3 +342,22 @@ p7 <- ggplot(poly_df, aes(x = x, y = y, group = patch, fill = t_stat)) +
 p7
 ggsave("../results/plots/07_egr1_patch_tstat.png", p7, width = 8, height = 6)
 ```
+
+## Discussion and Interpretation
+
+Based on the spatial stratified analysis of the mouse colon MERFISH dataset, we can draw several key insights:
+
+### 1. Spatial Structure and Patching
+The initial exploration (Figures 1-2) highlights the complex architecture of the colon. By focusing on the `MU4` neighborhood and tiling it into 100 patches (Figure 3), we successfully isolated local units that are more homogeneous in their large-scale tissue context but retain local gradients of immune cell exposure.
+
+### 2. Global Spatial Programs
+The meta-analysis volcano plot (Figure 4) identified a clear set of genes whose expression is modulated by proximity to immune cells. **`Egr1`** emerged as a top positive hit, suggesting it may be part of an immediate-early response triggered in epithelial cells by nearby immune signals. Conversely, genes like **`Rorc`** showed negative estimates, indicating they are repressed in immune-rich areas or specifically expressed in immune-depleted mucosal regions.
+
+### 3. Consistency across the Tissue
+The heatmap (Figure 5) confirms that the response of `Egr1` and other top genes is not localized to a single "hotspot" but is fairly consistent across the majority of the sampled patches. This suggests a systemic spatial relationship rather than a stochastic outlier effect.
+
+### 4. Localized Insights for `Egr1`
+Detailed inspection of `Egr1` (Figures 6-7) reveals that while the global meta-analysis is positive, there is local variation. Most patches show a positive t-statistic (red), confirming the upregulation near immune cells. However, some patches show a neutral or even slightly negative effect (blue), which may correspond to different crypt-villus zones or varying immune cell compositions in the neighborhood.
+
+### Conclusion
+This proof-of-concept demonstrates that spatial stratification can effectively move beyond simple global correlations to identify robust, locally-validated spatial programs in complex tissues. Future work should focus on automating the selection of optimal patch sizes and incorporating more complex mixed-effect models to further account for residual spatial autocorrelation.
